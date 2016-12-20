@@ -121,4 +121,6 @@ def new_comment(request):
     return redirect('/user_information/'+request.POST['profile_id'])
 def purge_users(request):
     User.objects.delete_all()
+    Comment.objects.delete_all()
+    Message.objects.delete_all()
     return redirect('/dashboard')
