@@ -1,0 +1,91 @@
+{% extends 'user_dashboard_app/base.html'%}
+
+{% block title %}
+  User Information
+{% endblock %}
+{% block body %}
+<div class="row">
+  <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+  <div class="row">
+    <div class="col-md-6">
+      <p>Registered at: {{ user.created_at }}</p>
+      <p>UserID: {{ user.id }}</p>
+      <p>Email address: {{ user.email }}</p>
+      <p>Description: {{ user.description }}</p>
+    </div>
+  </div>
+  <div class="row">
+    <form class="" action="{% url 'new_message' %}" method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="comment">Leave a message</label>
+        <input type="hidden" name="user_id" value="{{ user.id }}">
+        <textarea name="comment" rows="8" cols="80" class="form-control"></textarea>
+      </div>
+      <button type="submit" name="button" class="btn btn-success">Post</button>
+    </form>
+
+  </div>
+  {% if messages %}
+  {% for message in messages %}
+    <div{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>
+        <a class="close" data-dismiss="alert" href="#">&times;</a>
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  {% for message in profile_messages %}
+  <div class="row">
+    <div class="panel panel-primary">
+      <div class="panel-heading">{{ message.user_commentor.first_name }} {{ message.user_commentor.last_name }}{{ message.created_at }}</div>
+      <div class="panel-body">
+        {{ message.message_details }}
+      </div>
+    </div>
+  </div>
+
+
+    {% for comment in comments %}
+    <div class="row" style="background: pink;">
+      {% for c in comment.parent_message.all %}
+      {{ c.message_details }} <p>find me</p>
+      {% endfor %}
+    </div>
+      {% if comment.parent_message.id == message.id %}
+      <div class="row">
+        <div class="col-md-10 col-md-offset-2">
+          <div class="panel panel-info">
+            <div class="panel-heading">{{ comment.user_commentor.first_name }}  {{ comment.user_commentor.last_name }}   {{ comment.created_at }}</div>
+            <div class="panel-body">
+
+                {{ comment.message_details }}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    {% endfor %}
+    <div class="row">
+      <div class="col-md-10 col-md-offset-2">
+        <form class="" action="{% url 'message_comment' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="comment">Add a comment</label>
+              <input type="hidden" name="message_id" value="{{ message.id }}">
+              <input type="hidden" name="profile_id" value="{{ user.id }}">
+              <textarea name="comment" rows="2" cols="80" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <button type="submit" name="button" class="btn btn-success">Add Comment</button>
+            </div>
+
+        </form>
+      </div>
+
+    </div>
+
+  {% endfor %}
+</div>
+
+{% endblock %}

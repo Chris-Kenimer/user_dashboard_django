@@ -1,0 +1,23 @@
+{% extends 'user_dashboard_app/base.html' %}
+{% block title%} Home Page {% endblock %}
+{% block body %}
+  <div class="well">
+    <h1>Welcome to the test</h1>
+    <h3>We're going to build a cool application using a MVC framework! This application was building with the Village88 folks!</h3>
+    <button type="button" class="btn btn-primary">Start</button>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <h5>Manage Users</h5>
+      <p>Using this application, you'll learn how to add, remove, and edit users for the application</p>
+    </div>
+    <div class="col-md-4">
+      <h5>Leave messages</h5>
+      <p>Users will be able to leave a message to another user using this application</p>
+    </div>
+    <div class="col-md-4">
+      <h5>Edit User information</h5>
+      <p>Admins will be able to edit another user's information (email address, first name, last name, etc)</p>
+    </div>
+  </div>
+{% endblock %}
